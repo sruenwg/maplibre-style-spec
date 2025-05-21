@@ -7,7 +7,7 @@ import {getGeometry} from '../../test/lib/geometry';
 import {VariableAnchorOffsetCollection} from './types/variable_anchor_offset_collection';
 import {expectToMatchColor} from '../../test/lib/util';
 import {ExpressionSpecification} from '../types.g';
-import {describe, test, expect, vi, beforeEach} from 'vitest';
+import {describe, test, expect, vi, beforeEach, expectTypeOf} from 'vitest';
 
 // createExpression with a type-checked expression parameter
 function createExpression(expression: ExpressionSpecification, propertySpec?: StylePropertySpecification | null) {
@@ -1237,6 +1237,9 @@ describe('"within" expression', () => {
         }
         expect(response.value[0].message).toBe('\'within\' expression requires exactly one argument, but found 0 instead.');
     });
+    test('type requires GeoJSON input', () => {
+        expectTypeOf<['within', {type: 'Polygon'; coordinates: []}]>().toExtend<ExpressionSpecification>();
+    });
     test('rejects an expression as input', () => {
         // @ts-expect-error
         const response = createExpression(['within', ['literal', {type: 'Polygon', coordinates: []}]]);
@@ -1245,6 +1248,9 @@ describe('"within" expression', () => {
         }
         expect(response.value[0].message).toBe('\'within\' expression requires valid geojson object that contains polygon geometry type.');
     });
+    test('type rejects an expression as input', () => {
+        expectTypeOf<['within', ['literal', {type: 'Polygon'; coordinates: []}]]>().not.toExtend<ExpressionSpecification>();
+    });
     test('rejects a second argument', () => {
         // @ts-expect-error
         const response = createExpression(['within', {type: 'Polygon', coordinates: []}, 'second arg']);
@@ -1252,6 +1258,12 @@ describe('"within" expression', () => {
             throw new Error('Unexpectedly succeeded in parsing "within" expression');
         }
         expect(response.value[0].message).toBe('\'within\' expression requires exactly one argument, but found 2 instead.');
+    });
+    test('type rejects a second argument', () => {
+        expectTypeOf<['within', {type: 'Polygon'; coordinates: []}, 'second arg']>().not.toExtend<ExpressionSpecification>();
+    });
+    test('type rejects a second argument (failing test assertion)', () => {
+        expectTypeOf<['within', {type: 'Polygon'; coordinates: []}, 'second arg']>().toExtend<ExpressionSpecification>();
     });
     test('returns true if feature fully contained within input GeoJSON geometry', () => {
         const response = createExpression(['within', {
