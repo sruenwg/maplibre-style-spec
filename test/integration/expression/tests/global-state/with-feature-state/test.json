@@ -1,4 +1,13 @@
 {
+  "propertySpec": {
+    "type": "color",
+    "property-type": "data-driven",
+    "expression": {
+      "parameters": [
+        "feature"
+      ]
+    }
+  },
   "expression": [
     "coalesce",
     [
@@ -50,13 +59,33 @@
       "result": "success",
       "isFeatureConstant": false,
       "isZoomConstant": true,
-      "type": "value"
+      "type": "color"
     },
     "outputs": [
-      "black",
-      "magenta",
-      "cyan",
-      "cyan"
+      [
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        1
+      ],
+      [
+        0,
+        1,
+        1,
+        1
+      ],
+      [
+        0,
+        1,
+        1,
+        1
+      ]
     ]
   }
 }
