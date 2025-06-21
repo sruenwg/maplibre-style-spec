@@ -1,0 +1,62 @@
+{
+  "expression": [
+    "coalesce",
+    [
+      "global-state",
+      "color"
+    ],
+    [
+      "feature-state",
+      "color"
+    ],
+    "black"
+  ],
+  "inputs": [
+    [
+      {},
+      {}
+    ],
+    [
+      {},
+      {
+        "featureState": {
+          "color": "magenta"
+        }
+      }
+    ],
+    [
+      {
+        "globalState": {
+          "color": "cyan"
+        }
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "color": "cyan"
+        }
+      },
+      {
+        "featureState": {
+          "color": "magenta"
+        }
+      }
+    ]
+  ],
+  "expected": {
+    "compiled": {
+      "result": "success",
+      "isFeatureConstant": false,
+      "isZoomConstant": true,
+      "type": "value"
+    },
+    "outputs": [
+      "black",
+      "magenta",
+      "cyan",
+      "cyan"
+    ]
+  }
+}
